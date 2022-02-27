@@ -19,6 +19,14 @@
         {
             "name": "Foods",
             "description": "API for Food Menu"
+        },
+        {
+            "name": "Reviews",
+            "description": "API for Review Food"
+        },
+        {
+            "name": "Sharese",
+            "description": "API for Share Food"
         }
     ],
     "schemes": ["http"],
@@ -37,15 +45,6 @@
             }
         },
         "/user/{id}": {
-            "parameters": [
-                {
-                    "name": "id",
-                    "in": "path",
-                    "required": true,
-                    "description": "ID of user that we want to find",
-                    "type": "integer"
-                }
-            ],
             "put": {
                 "summary": "Update user with give ID",
                 "tags": ["Users"],
@@ -64,7 +63,16 @@
                         "description": "User is updated"
                     }
                 }
-            }
+            },
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "description": "ID of user",
+                    "type": "integer"
+                }
+            ]
         },
         "/user": {
             "post": {
@@ -92,21 +100,21 @@
             "delete": {
                 "summary": "Delete user with given ID",
                 "tags": ["Users"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "ID of user",
+                        "type": "integer"
+                    }
+                ],
                 "responses": {
-                  "200": {
-                    "description": "User is deleted"
-                  }
+                    "200": {
+                        "description": "User is deleted"
+                    }
                 }
-            },
-            "parameters": [
-                {
-                    "name": "id",
-                    "in": "path",
-                    "required": true,
-                    "description": "ID of user that we want to find",
-                    "type": "integer"
-                }
-            ]
+            }
         },
         "/foods": {
             "get": {
@@ -137,6 +145,140 @@
                 "responses": {
                     "200": {
                         "description": "New food is created"
+                    }
+                }
+            }
+        },
+        "/food/{id}": {
+            "put": {
+                "summary": "Update food with give ID",
+                "tags": ["Foods"],
+                "parameters": [
+                    {
+                        "name": "food",
+                        "in": "body",
+                        "description": "Food with new values of properties",
+                        "schema": {
+                            "$ref": "#/definitions/FoodMenu"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Food is updated"
+                    }
+                }
+            },
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "description": "ID of food",
+                    "type": "integer"
+                }
+            ]
+        },
+        "/deletefood/{id}": {
+            "delete": {
+                "summary": "Delete food with given ID",
+                "tags": ["Foods"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "ID of food",
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Food is deleted"
+                    }
+                }
+            }
+        },
+        "/review": {
+            "post": {
+                "tags": ["Reviews"],
+                "summary": "Create New Review of Food",
+                "parameters": [
+                    {
+                        "name": "Review",
+                        "in": "body",
+                        "description": "For Create New Review",
+                        "schema": {
+                            "$ref": "#/definitions/ReviewFood"
+                        }
+                    }
+                ],
+                "produces": ["application/json"],
+                "responses": {
+                    "200": {
+                        "description": "New review is created"
+                    }
+                }
+            }
+        },
+        "/reviews/{id}": {
+            "get": {
+                "tags": ["Reviews"],
+                "summary": "Get All Review of Food ID",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "ID of food",
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/share": {
+            "post": {
+                "tags": ["Sharese"],
+                "summary": "Create New Share Food",
+                "parameters": [
+                    {
+                        "name": "Share",
+                        "in": "body",
+                        "description": "For Create New Share Food",
+                        "schema": {
+                            "$ref": "#/definitions/ShareFood"
+                        }
+                    }
+                ],
+                "produces": ["application/json"],
+                "responses": {
+                    "200": {
+                        "description": "New share is created"
+                    }
+                }
+            }
+        },
+        "/sharese/{id}": {
+            "get": {
+                "tags": ["Sharese"],
+                "summary": "Get All User's Share Food",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "ID of user",
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
                     }
                 }
             }
@@ -182,7 +324,13 @@
             }
         },
         "ReviewFood": {
-            "required": ["ReviewDetail", "Rating", "ReviewDate", "UserAccountID", "FoodMenuID"],
+            "required": [
+                "ReviewDetail",
+                "Rating",
+                "ReviewDate",
+                "UserAccountID",
+                "FoodMenuID"
+            ],
             "properties": {
                 "ReviewDetail": {
                     "type": "string"
@@ -230,7 +378,12 @@
             }
         },
         "MessageChat": {
-            "required": ["ContentText", "AddDate", "FromUserID", "UserAccountID"],
+            "required": [
+                "ContentText",
+                "AddDate",
+                "FromUserID",
+                "UserAccountID"
+            ],
             "properties": {
                 "ContentText": {
                     "type": "string"

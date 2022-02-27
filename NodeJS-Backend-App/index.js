@@ -22,9 +22,16 @@ app.use(
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
 // Create APIs
+
+// User Account
 app.get("/users", db.getUsers)
 app.post("/user", db.createUser)
 app.put("/user/:id", db.updateUser)
+app.delete("/deleteuser/:id", db.deleteUser)
+
+// Food Menu
+app.get("/foods", db.getFoods)
+app.post("/food", db.createFood)
 
 // Listen to Port 3000
 app.listen(port, () => {

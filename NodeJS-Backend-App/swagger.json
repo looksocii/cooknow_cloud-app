@@ -15,6 +15,10 @@
         {
             "name": "Users",
             "description": "API for User Account"
+        },
+        {
+            "name": "Foods",
+            "description": "API for Food Menu"
         }
     ],
     "schemes": ["http"],
@@ -27,10 +31,7 @@
                 "summary": "Get All Users",
                 "responses": {
                     "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/UserAccount"
-                        }
+                        "description": "OK"
                     }
                 }
             }
@@ -60,10 +61,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "User is updated",
-                        "schema": {
-                            "$ref": "#/definitions/UserAccount"
-                        }
+                        "description": "User is updated"
                     }
                 }
             }
@@ -85,10 +83,60 @@
                 "produces": ["application/json"],
                 "responses": {
                     "200": {
-                        "description": "New user is created",
+                        "description": "New user is created"
+                    }
+                }
+            }
+        },
+        "/deleteuser/{id}": {
+            "delete": {
+                "summary": "Delete user with given ID",
+                "tags": ["Users"],
+                "responses": {
+                  "200": {
+                    "description": "User is deleted"
+                  }
+                }
+            },
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "description": "ID of user that we want to find",
+                    "type": "integer"
+                }
+            ]
+        },
+        "/foods": {
+            "get": {
+                "tags": ["Foods"],
+                "summary": "Get All Foods",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/food": {
+            "post": {
+                "tags": ["Foods"],
+                "summary": "Create New Food",
+                "parameters": [
+                    {
+                        "name": "Food",
+                        "in": "body",
+                        "description": "For Create New Food",
                         "schema": {
-                            "$ref": "#/definitions/UserAccount"
+                            "$ref": "#/definitions/FoodMenu"
                         }
+                    }
+                ],
+                "produces": ["application/json"],
+                "responses": {
+                    "200": {
+                        "description": "New food is created"
                     }
                 }
             }
@@ -113,6 +161,99 @@
                 },
                 "BirthDate": {
                     "type": "string"
+                }
+            }
+        },
+        "FoodMenu": {
+            "required": ["FoodName", "FoodDetail", "AddDate", "UserAccountID"],
+            "properties": {
+                "FoodName": {
+                    "type": "string"
+                },
+                "FoodDetail": {
+                    "type": "string"
+                },
+                "AddDate": {
+                    "type": "string"
+                },
+                "UserAccountID": {
+                    "type": "integer"
+                }
+            }
+        },
+        "ReviewFood": {
+            "required": ["ReviewDetail", "Rating", "ReviewDate", "UserAccountID", "FoodMenuID"],
+            "properties": {
+                "ReviewDetail": {
+                    "type": "string"
+                },
+                "Rating": {
+                    "type": "integer"
+                },
+                "ReviewDate": {
+                    "type": "string"
+                },
+                "UserAccountID": {
+                    "type": "integer"
+                },
+                "FoodMenuID": {
+                    "type": "integer"
+                }
+            }
+        },
+        "ShareFood": {
+            "required": ["ShareDate", "UserAccountID", "FoodMenuID"],
+            "properties": {
+                "ShareDate": {
+                    "type": "string"
+                },
+                "UserAccountID": {
+                    "type": "integer"
+                },
+                "FoodMenuID": {
+                    "type": "integer"
+                }
+            }
+        },
+        "ImageFood": {
+            "required": ["FoodImg", "UserAccountID", "FoodMenuID"],
+            "properties": {
+                "FoodImg": {
+                    "type": "string"
+                },
+                "UserAccountID": {
+                    "type": "integer"
+                },
+                "FoodMenuID": {
+                    "type": "integer"
+                }
+            }
+        },
+        "MessageChat": {
+            "required": ["ContentText", "AddDate", "FromUserID", "UserAccountID"],
+            "properties": {
+                "ContentText": {
+                    "type": "string"
+                },
+                "AddDate": {
+                    "type": "string"
+                },
+                "FromUserID": {
+                    "type": "integer"
+                },
+                "UserAccountID": {
+                    "type": "integer"
+                }
+            }
+        },
+        "Follow": {
+            "required": ["FollowingUserID", "UserAccountID"],
+            "properties": {
+                "FollowingUserID": {
+                    "type": "integer"
+                },
+                "UserAccountID": {
+                    "type": "integer"
                 }
             }
         }

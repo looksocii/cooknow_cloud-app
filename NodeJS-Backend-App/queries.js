@@ -9,7 +9,7 @@ const logger = createLogger({
     transports: [new transports.Console()],
 })
 
-// Setting DataBase Config
+// Setting Data Base Config
 const Pool = require("pg").Pool
 const pool = new Pool({
     user: "postgres",
@@ -19,15 +19,20 @@ const pool = new Pool({
     port: 5432,
 })
 
+// -----------------------------------------------------------------------------
+//                      User Account Table
+// -----------------------------------------------------------------------------
+
 // View All User Account
 const getUsers = (request, response) => {
     pool.query("SELECT * FROM UserAccount", (error, results) => {
         if (error) {
             logger.error(error)
+        } else {
+            // Response and Logging
+            response.status(200).json(results.rows)
+            logger.info("GET /" + request.get("host") + request.originalUrl)
         }
-        response.status(200).json(results.rows)
-        // Logging
-        logger.info("GET /" + request.get("host") + request.originalUrl)
     })
 }
 
@@ -43,10 +48,13 @@ const updateUser = (request, response) => {
                 throw error
             } else {
                 // Response and Logging
-                response.status(201).send(`User modified with ID : ${id}`)
-                logger.info("PUT /" + "User modified with ID : " + id)
+                response.status(200).send(`User modified with ID : ${id}`)
+                logger.info(
+                    "PUT /" +
+                        request.get("host") +
+                        request.originalUrl
+                )
             }
-            response.status(200).send(`User modified with ID : ${id}`)
         }
     )
 }
@@ -66,7 +74,68 @@ const createUser = (request, response) => {
                     .status(201)
                     .send(`User added with User Name : ${UserName}`)
                 logger.info(
-                    "POST /" + "User added with User Name : " + UserName
+                    "POST /" +
+                        request.get("host") +
+                        request.originalUrl
+                )
+            }
+        }
+    )
+}
+
+// Delete User Account
+const deleteUser = (request, response) => {
+    const id = parseInt(request.params.id)
+    pool.query("DELETE FROM UserAccount WHERE id = $1", [id], (error, results) => {
+        if (error) {
+            throw error
+        } else {
+            // Response and Logging
+            response.status(200).send(`User deleted with ID : ${id}`)
+            logger.info(
+                "DELETE /" +
+                    request.get("host") +
+                    request.originalUrl
+            )
+        }
+    })
+}
+
+// -----------------------------------------------------------------------------
+//                      Food Menu Table
+// -----------------------------------------------------------------------------
+
+// View All Food Menu
+const getFoods = (request, response) => {
+    pool.query("SELECT * FROM FoodMenu", (error, results) => {
+        if (error) {
+            logger.error(error)
+        } else {
+            // Response and Logging
+            response.status(200).json(results.rows)
+            logger.info("GET /" + request.get("host") + request.originalUrl)
+        }
+    })
+}
+
+// Create Food Menu
+const createFood = (request, response) => {
+    const { FoodName, FoodDetail, AddDate, UserAccountID } = request.body
+    pool.query(
+        "INSERT INTO FoodMenu (Food_Name, Food_Detail, Add_Date, UserAccount_ID) VALUES ($1, $2, $3, $4)",
+        [FoodName, FoodDetail, AddDate, UserAccountID],
+        (error, results) => {
+            if (error) {
+                logger.error(error)
+            } else {
+                // Response and Logging
+                response
+                    .status(201)
+                    .send(`Food added with Food Name : ${FoodName}`)
+                logger.info(
+                    "POST /" +
+                        request.get("host") +
+                        request.originalUrl
                 )
             }
         }
@@ -78,4 +147,7 @@ module.exports = {
     getUsers,
     createUser,
     updateUser,
+    deleteUser,
+    getFoods,
+    createFood,
 }

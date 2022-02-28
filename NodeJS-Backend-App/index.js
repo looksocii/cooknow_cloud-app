@@ -48,6 +48,22 @@ app.post("/share", db.createShare)
 app.get("/sharese/:id", db.getSharese)
 // ----------------------------------------------
 
+// ----------------- Image Food -----------------
+app.post("/image", db.createImage)
+app.get("/imagefood", db.getImages)
+// ----------------------------------------------
+
+// ---------------- Message Chat ----------------
+app.post("/message", db.createMessage)
+app.get("/messagechat", db.getMessageChat)
+// ----------------------------------------------
+
+// ------------------- Follow -------------------
+app.post("/follow", db.createFollow)
+app.get("/follower/:id", db.getFollower)
+app.delete("/unfollow", db.deleteFollowing)
+// ----------------------------------------------
+
 // Listen to Port 3000
 app.listen(port, () => {
     console.log(`Backend App Running on Port: ${port}`)

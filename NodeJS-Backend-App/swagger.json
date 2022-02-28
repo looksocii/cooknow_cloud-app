@@ -27,6 +27,18 @@
         {
             "name": "Sharese",
             "description": "API for Share Food"
+        },
+        {
+            "name": "Images",
+            "description": "API for Image Food"
+        },
+        {
+            "name": "Messages",
+            "description": "API for Message Chat"
+        },
+        {
+            "name": "Follow",
+            "description": "API for Following User"
         }
     ],
     "schemes": ["http"],
@@ -279,6 +291,157 @@
                 "responses": {
                     "200": {
                         "description": "OK"
+                    }
+                }
+            }
+        },
+        "/image": {
+            "post": {
+                "tags": ["Images"],
+                "summary": "Create New Image Food",
+                "parameters": [
+                    {
+                        "name": "Image",
+                        "in": "body",
+                        "description": "For Create New Image Food",
+                        "schema": {
+                            "$ref": "#/definitions/ImageFood"
+                        }
+                    }
+                ],
+                "produces": ["application/json"],
+                "responses": {
+                    "200": {
+                        "description": "New image food is created"
+                    }
+                }
+            }
+        },
+        "/imagefood": {
+            "get": {
+                "tags": ["Images"],
+                "summary": "Get All Image of Food",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/message": {
+            "post": {
+                "tags": ["Messages"],
+                "summary": "Create New Message",
+                "parameters": [
+                    {
+                        "name": "Message",
+                        "in": "body",
+                        "description": "For Create New Message",
+                        "schema": {
+                            "$ref": "#/definitions/MessageChat"
+                        }
+                    }
+                ],
+                "produces": ["application/json"],
+                "responses": {
+                    "200": {
+                        "description": "New message is created"
+                    }
+                }
+            }
+        },
+        "/messagechat": {
+            "get": {
+                "tags": ["Messages"],
+                "summary": "Get All Message Chat of User",
+                "parameters": [
+                    {
+                        "name": "FromID",
+                        "in": "query",
+                        "required": true,
+                        "description": "ID of from user",
+                        "type": "integer"
+                    },
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "required": true,
+                        "description": "ID of user",
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/follow": {
+            "post": {
+                "tags": ["Follow"],
+                "summary": "Create New Follow",
+                "parameters": [
+                    {
+                        "name": "Follow",
+                        "in": "body",
+                        "description": "For Create New Following User",
+                        "schema": {
+                            "$ref": "#/definitions/Follow"
+                        }
+                    }
+                ],
+                "produces": ["application/json"],
+                "responses": {
+                    "200": {
+                        "description": "New follow is created"
+                    }
+                }
+            }
+        },
+        "/follower/{id}": {
+            "get": {
+                "tags": ["Follow"],
+                "summary": "Get All Follower of User",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "ID of user",
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/unfollow": {
+            "delete": {
+                "summary": "Unfollow with given user ID",
+                "tags": ["Follow"],
+                "parameters": [
+                    {
+                        "name": "FollowingUserID",
+                        "in": "query",
+                        "required": true,
+                        "description": "ID of following user",
+                        "type": "integer"
+                    },
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "required": true,
+                        "description": "ID of user",
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Follow is deleted"
                     }
                 }
             }

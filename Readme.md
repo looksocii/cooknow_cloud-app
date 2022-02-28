@@ -18,3 +18,7 @@
 ## AWS Architecture Diagram
 
 <img src="./img/cook-now_aws-architecture.png">
+
+## Swagger (API Documentation)
+
+<img src="./img/Swagger.png">

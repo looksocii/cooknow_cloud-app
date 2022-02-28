@@ -258,6 +258,158 @@ const getSharese = (request, response) => {
     )
 }
 
+// -----------------------------------------------------------------------------
+//                      Image Food Table
+// -----------------------------------------------------------------------------
+
+// Create Image Food
+const createImage = (request, response) => {
+    const { FoodImg, UserAccountID, FoodMenuID } = request.body
+    pool.query(
+        "INSERT INTO ImageFood (Food_Img, UserAccount_ID, FoodMenu_ID) VALUES ($1, $2, $3)",
+        [FoodImg, UserAccountID, FoodMenuID],
+        (error, results) => {
+            if (error) {
+                logger.error(error)
+            } else {
+                // Response and Logging
+                response.status(201).send(`Image of food ID : ${FoodMenuID}`)
+                logger.info(
+                    "POST /" + request.get("host") + request.originalUrl
+                )
+            }
+        }
+    )
+}
+
+// View All Image of Food
+const getImages = (request, response) => {
+    pool.query(
+        "SELECT * FROM ImageFood AS if JOIN FoodMenu AS fm ON if.FoodMenu_ID = fm.ID",
+        (error, results) => {
+            if (error) {
+                logger.error(error)
+            } else {
+                // Response and Logging
+                response.status(200).json(results.rows)
+                logger.info("GET /" + request.get("host") + request.originalUrl)
+            }
+        }
+    )
+}
+
+// -----------------------------------------------------------------------------
+//                      Message Chat Table
+// -----------------------------------------------------------------------------
+
+// Create Message
+const createMessage = (request, response) => {
+    const { ContentText, AddDate, FromUserID, UserAccountID } = request.body
+    pool.query(
+        "INSERT INTO MessageChat (ContentText, Add_Date, From_User_ID, UserAccount_ID) VALUES ($1, $2, $3, $4)",
+        [ContentText, AddDate, FromUserID, UserAccountID],
+        (error, results) => {
+            if (error) {
+                logger.error(error)
+            } else {
+                // Response and Logging
+                response
+                    .status(201)
+                    .send(`Message from user ID : ${FromUserID}`)
+                logger.info(
+                    "POST /" + request.get("host") + request.originalUrl
+                )
+            }
+        }
+    )
+}
+
+// View All Message Chat of User
+const getMessageChat = (request, response) => {
+    const FromID = parseInt(request.query.FromID)
+    const id = parseInt(request.query.id)
+    pool.query(
+        "SELECT * FROM MessageChat WHERE From_User_ID = $1 and UserAccount_ID = $2",
+        [FromID, id],
+        (error, results) => {
+            if (error) {
+                logger.error(error)
+            } else {
+                // Response and Logging
+                response.status(200).json(results.rows)
+                logger.info("GET /" + request.get("host") + request.originalUrl)
+            }
+        }
+    )
+}
+
+// -----------------------------------------------------------------------------
+//                      Follow Table
+// -----------------------------------------------------------------------------
+
+// Create Follow User
+const createFollow = (request, response) => {
+    const { FollowingUserID, UserAccountID } = request.body
+    pool.query(
+        "INSERT INTO Follow (Following_User_ID, UserAccount_ID) VALUES ($1, $2)",
+        [FollowingUserID, UserAccountID],
+        (error, results) => {
+            if (error) {
+                logger.error(error)
+            } else {
+                // Response and Logging
+                response
+                    .status(201)
+                    .send(`Following User ID : ${FollowingUserID}`)
+                logger.info(
+                    "POST /" + request.get("host") + request.originalUrl
+                )
+            }
+        }
+    )
+}
+
+// View All Follower of User
+const getFollower = (request, response) => {
+    const id = parseInt(request.params.id)
+    pool.query(
+        "SELECT * FROM Follow WHERE UserAccount_ID = $1",
+        [id],
+        (error, results) => {
+            if (error) {
+                logger.error(error)
+            } else {
+                // Response and Logging
+                response.status(200).json(results.rows)
+                logger.info("GET /" + request.get("host") + request.originalUrl)
+            }
+        }
+    )
+}
+
+// Unfollow User
+const deleteFollowing = (request, response) => {
+    const FollowingUserID = parseInt(request.query.FollowingUserID)
+    const id = parseInt(request.query.id)
+    pool.query(
+        "DELETE FROM Follow WHERE Following_User_ID = $1 and UserAccount_ID = $2",
+        [FollowingUserID, id],
+        (error, results) => {
+            if (error) {
+                throw error
+            } else {
+                // Response and Logging
+                response
+                    .status(200)
+                    .send(`Unfollow User ID : ${FollowingUserID}`)
+                logger.info(
+                    "DELETE /" + request.get("host") + request.originalUrl
+                )
+            }
+        }
+    )
+}
+
 // Exports QUERY Function to nodejs-backend-app
 module.exports = {
     getUsers,
@@ -272,4 +424,11 @@ module.exports = {
     getReviews,
     createShare,
     getSharese,
+    createImage,
+    getImages,
+    createMessage,
+    getMessageChat,
+    createFollow,
+    getFollower,
+    deleteFollowing,
 }
